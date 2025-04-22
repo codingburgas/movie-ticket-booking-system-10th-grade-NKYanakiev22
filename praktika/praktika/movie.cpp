@@ -73,7 +73,8 @@ void editShowtimes(vector<Movie>& movies) {
             cout << "Enter new time: ";
             cin >> movie.showtimes[stIndex - 1].time;
         }
-    } else if (choice == 2) {
+    }
+    else if (choice == 2) {
         for (size_t i = 0; i < movie.showtimes.size(); ++i)
             cout << i + 1 << ". " << movie.showtimes[i].time << " (" << movie.showtimes[i].availableSeats << " seats)\n";
 
@@ -84,7 +85,8 @@ void editShowtimes(vector<Movie>& movies) {
             cout << "Enter new number of seats: ";
             cin >> movie.showtimes[stIndex - 1].availableSeats;
         }
-    } else {
+    }
+    else {
         cout << "Invalid choice.\n";
     }
 }

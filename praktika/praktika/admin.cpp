@@ -13,8 +13,9 @@ int main() {
     while (true) {
         clearScreen();
         cout << "\n=== Movie Booking System ===\n";
-        cout << "1. Admin panel\n";
-        cout << "2. Customer panel\n";
+        cout << "What are you?:"
+        cout << "1. Admin\n";
+        cout << "2. Customer\n";
         cout << "3. Exit\n";
         cout << "Choose: ";
         cin >> n;
