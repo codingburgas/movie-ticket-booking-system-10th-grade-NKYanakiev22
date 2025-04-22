@@ -11,6 +11,7 @@ int main() {
     int n;
 
     while (true) {
+        clearScreen();
         cout << "\n=== Movie Booking System ===\n";
         cout << "1. Admin panel\n";
         cout << "2. Customer panel\n";
@@ -24,12 +25,14 @@ int main() {
             break;
         case 2:
             customerLoginOrRegister(customers);
+            customerBookTicket(movies);
             break;
         case 3:
             cout << "Exiting the program...\n";
             return 0;
         default:
             cout << "Invalid choice! Please choose again.\n";
+            break;
         }
     }
 
