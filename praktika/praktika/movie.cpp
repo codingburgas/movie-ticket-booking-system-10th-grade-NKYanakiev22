@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void addMovie(std::vector<Movie>& movies) {
+void addMovie(vector<Movie>& movies) {
     Movie m;
     cout << "Enter movie title: ";
     cin.ignore();
