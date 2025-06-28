@@ -4,6 +4,7 @@
 
 struct Showtime {
     std::string time;
+    std::string date;
     int availableSeats;
 };
 

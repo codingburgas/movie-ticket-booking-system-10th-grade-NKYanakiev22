@@ -3,10 +3,12 @@
 #include <string>
 #include "admin.h"
 #include "movie.h"
+#include "utils.h"
 
 using namespace std;
 
 bool adminLogin(vector<Movie>& movies) {
+    clearConsole();
     string username, password;
     cout << "Enter admin username: ";
     cin >> username;
@@ -27,6 +29,7 @@ bool adminLogin(vector<Movie>& movies) {
 void adminMenu(vector<Movie>& movies) {
     int choice;
     do {
+        clearConsole();
         cout << "\n=== Admin Menu ===\n";
         cout << "1. Add Movie\n";
         cout << "2. View Movies\n";
@@ -34,6 +37,14 @@ void adminMenu(vector<Movie>& movies) {
         cout << "4. Logout\n";
         cout << "Choose an option: ";
         cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Try again.\n";
+            continue;
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (choice) {
         case 1:

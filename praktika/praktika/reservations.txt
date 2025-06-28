@@ -1,0 +1,2 @@
+Movie: Cars, City: Burgas, Date: 30.06.2025, Showtime: 20:00, Tickets: 2
+Movie: It, City: Burgas, Date: 26.05.2025, Showtime: 20:00, Tickets: 1
