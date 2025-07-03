@@ -135,7 +135,8 @@ void CustomerManager::customerMenu(vector<Movie>& movies, const string& username
         return;
     }
 
-    resFile << "Movie: " << selected.title
+    resFile << "Username: " << username
+        << "Movie: " << selected.title
         << ", City: " << selected.city
         << ", Date: " << show.date
         << ", Showtime: " << show.time

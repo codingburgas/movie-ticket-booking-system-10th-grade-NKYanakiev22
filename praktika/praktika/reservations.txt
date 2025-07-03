@@ -1,1 +1,0 @@
-Movie: Titanic, City: Burgas, Date: 05.07.2025, Showtime: 16:00, Tickets: 2
