@@ -3,19 +3,18 @@
 #include <string>
 #include "admin.h"
 #include "movie.h"
-#include "utils.h"
 
 using namespace std;
 
 bool adminLogin(vector<Movie>& movies) {
-    clearConsole();
+    system("cls");;
     string username, password;
     cout << "Enter admin username: ";
     cin >> username;
     cout << "Enter admin password: ";
     cin >> password;
 
-    if (username == "opel" && password == "astra-h-opc") {
+    if (username == "kolyo" && password == "121212") {
         cout << "Login successful!\n";
         adminMenu(movies);
         return true;
@@ -29,7 +28,7 @@ bool adminLogin(vector<Movie>& movies) {
 void adminMenu(vector<Movie>& movies) {
     int choice;
     do {
-        clearConsole();
+        system("cls");;
         cout << "\n=== Admin Menu ===\n";
         cout << "1. Add Movie\n";
         cout << "2. View Movies\n";

@@ -5,7 +5,6 @@
 #include "admin.h"
 #include "movie.h"
 #include "customer.h"
-#include "utils.h"
 
 using namespace std;
 
@@ -14,7 +13,7 @@ int main() {
     int choice;
 
     while (true) {
-        clearConsole();
+        system("cls");;
         cout << "\n=== Movie Booking System ===\n";
         cout << "1. Admin\n";
         cout << "2. Customer\n";
@@ -36,7 +35,7 @@ int main() {
             break;
         case 2: {
             int customerChoice;
-            clearConsole();
+            system("cls");;
             cout << "\n=== Customer Menu ===\n";
             cout << "1. Register\n";
             cout << "2. Login\n";

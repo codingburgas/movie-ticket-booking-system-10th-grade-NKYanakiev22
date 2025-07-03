@@ -4,5 +4,5 @@
 #include "movie.h"
 
 bool registerCustomer();
-string loginCustomer();
-void customerMenu(vector<Movie>& movies, const string& username);
+std::string loginCustomer();
+void customerMenu(std::vector<Movie>& movies, const std::string& username);

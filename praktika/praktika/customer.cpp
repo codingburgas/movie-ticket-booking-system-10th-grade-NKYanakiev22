@@ -1,7 +1,6 @@
 #include "customer.h"
 #include <iostream>
 #include <fstream>
-#include "utils.h"
 
 using namespace std;
 
@@ -59,7 +58,8 @@ std::string loginCustomer() {
 }
 
 void customerMenu(vector<Movie>& movies, const string& username) {
-    clearConsole();
+    system("cls");
+
     if (movies.empty()) {
         cout << "No movies to display.\n";
         return;
@@ -67,12 +67,21 @@ void customerMenu(vector<Movie>& movies, const string& username) {
 
     cout << "\n=== Available Movies ===\n";
     for (size_t i = 0; i < movies.size(); ++i) {
-        cout << i + 1 << ". " << movies[i].title
-            << " | " << movies[i].city
-            << " | " << movies[i].date << endl;
-        for (size_t j = 0; j < movies[i].showtimes.size(); ++j) {
-            cout << "   " << j + 1 << ") " << movies[i].showtimes[j].time
-                << " - Seats: " << movies[i].showtimes[j].availableSeats << endl;
+        const Movie& movie = movies[i];
+        cout << i + 1 << ". " << movie.title
+            << " | " << movie.city;
+
+        // Show first showtime date if available
+        if (!movie.showtimes.empty()) {
+            cout << " | " << movie.showtimes[0].date << endl;
+        }
+        else {
+            cout << " | No showtimes\n";
+        }
+
+        for (size_t j = 0; j < movie.showtimes.size(); ++j) {
+            cout << "   " << j + 1 << ") " << movie.showtimes[j].time
+                << " - Seats: " << movie.showtimes[j].availableSeats << endl;
         }
     }
 
@@ -106,10 +115,9 @@ void customerMenu(vector<Movie>& movies, const string& username) {
         return;
     }
 
-    resFile << username << " "
-        << selected.title << " "
-        << selected.city << " "
-        << selected.date << " "
-        << show.time << " "
-        << tickets << "\n";
+    resFile << "Movie: " << selected.title
+        << ", City: " << selected.city
+        << ", Date: " << show.date
+        << ", Showtime: " << show.time
+        << ", Tickets: " << tickets << "\n";
 }
