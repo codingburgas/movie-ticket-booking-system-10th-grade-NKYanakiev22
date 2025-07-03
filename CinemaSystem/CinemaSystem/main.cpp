@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <string>
 #include <limits>
 #include "admin.h"
 #include "movie.h"
@@ -10,68 +9,49 @@ using namespace std;
 
 int main() {
     vector<Movie> movies;
+    Admin admin;
+    CustomerManager cm;
     int choice;
 
     while (true) {
-        system("cls");;
+        system("cls");
         cout << "\n=== Movie Booking System ===\n";
-        cout << "1. Admin\n";
-        cout << "2. Customer\n";
-        cout << "3. Exit\n";
-        cout << "Choose: ";
+        cout << "1. Admin\n2. Customer\n3. Exit\nChoose: ";
         cin >> choice;
 
         if (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input. Please enter a number.\n";
+            cout << "Invalid input.\n";
             continue;
         }
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (choice) {
         case 1:
-            adminLogin(movies);
+            admin.login(movies);
             break;
         case 2: {
-            int customerChoice;
-            system("cls");;
-            cout << "\n=== Customer Menu ===\n";
-            cout << "1. Register\n";
-            cout << "2. Login\n";
-            cout << "Choose: ";
-            cin >> customerChoice;
+            int cChoice;
+            cout << "\n1. Register\n2. Login\nChoose: ";
+            cin >> cChoice;
 
-            if (cin.fail()) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid input. Please enter a number.\n";
-                continue;
-            }
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-            CustomerManager cm;
-
-            if(customerChoice == 1) {
+            if (cChoice == 1) {
                 cm.registerCustomer();
-                cout << "Now log in to continue.\n";
             }
-            else if (customerChoice == 2) {
-                string loggedInUser = cm.loginCustomer();
-                if (!loggedInUser.empty()) {
-                    cm.customerMenu(movies, loggedInUser);
-                }
+            else if (cChoice == 2) {
+                string user = cm.loginCustomer();
+                if (!user.empty()) cm.customerMenu(movies, user);
             }
             else {
-                cout << "Invalid option.\n";
+                cout << "Invalid choice.\n";
             }
             break;
         }
         case 3:
-            cout << "Exiting...\n";
+            cout << "Goodbye!\n";
             return 0;
         default:
-            cout << "Invalid choice. Try again.\n";
+            cout << "Invalid choice.\n";
         }
     }
 
