@@ -1,8 +1,27 @@
 #include "customer.h"
 #include <iostream>
 #include <fstream>
+#include <limits>
 
 using namespace std;
+
+bool CustomerManager::isUsernameTaken(const string& username) {
+    ifstream file(customerFile);
+    string u, p;
+    while (file >> u >> p) {
+        if (u == username) return true;
+    }
+    return false;
+}
+
+bool CustomerManager::validateCredentials(const string& username, const string& password) {
+    ifstream file(customerFile);
+    string u, p;
+    while (file >> u >> p) {
+        if (u == username && p == password) return true;
+    }
+    return false;
+}
 
 bool CustomerManager::registerCustomer() {
     string username, password;
@@ -11,19 +30,14 @@ bool CustomerManager::registerCustomer() {
     cout << "Password: ";
     cin >> password;
 
-    ifstream check("customers.txt");
-    string u, p;
-    while (check >> u >> p) {
-        if (u == username) {
-            cout << "Username already exists.\n";
-            return false;
-        }
+    if (isUsernameTaken(username)) {
+        cout << "Username already exists.\n";
+        return false;
     }
-    check.close();
 
-    ofstream file("customers.txt", ios::app);
+    ofstream file(customerFile, ios::app);
     if (!file) {
-        cout << "Cannot open customers.txt.\n";
+        cout << "Cannot open file.\n";
         return false;
     }
 
@@ -34,7 +48,6 @@ bool CustomerManager::registerCustomer() {
 
 string CustomerManager::loginCustomer() {
     string username, password;
-    string fileUsername, filePassword;
 
     while (true) {
         cout << "Login\nUsername: ";
@@ -42,31 +55,15 @@ string CustomerManager::loginCustomer() {
         cout << "Password: ";
         cin >> password;
 
-        ifstream inFile("customers.txt");
-        if (!inFile) {
-            cout << "Cannot open customers.txt.\n";
-            return "";
-        }
-
-        bool found = false;
-        while (inFile >> fileUsername >> filePassword) {
-            if (username == fileUsername && password == filePassword) {
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
+        if (validateCredentials(username, password)) {
             cout << "Login successful!\n";
             return username;
         }
         else {
             char retry;
-            cout << "Incorrect username or password. Try again? (y/n): ";
+            cout << "Incorrect credentials. Try again? (y/n): ";
             cin >> retry;
-            if (retry == 'n' || retry == 'N') {
-                return "";
-            }
+            if (retry == 'n' || retry == 'N') return "";
         }
     }
 }
@@ -75,33 +72,39 @@ void CustomerManager::customerMenu(vector<Movie>& movies, const string& username
     system("cls");
 
     if (movies.empty()) {
-        cout << "No movies at the moment.\n";
+        cout << "No movies available.\n";
         system("pause");
         return;
     }
 
     cout << "\n=== Available Movies ===\n";
     for (size_t i = 0; i < movies.size(); ++i) {
-        cout << i + 1 << ". " << movies[i].title
-            << " | " << movies[i].city << endl;
-        for (size_t j = 0; j < movies[i].showtimes.size(); ++j) {
-            cout << "   " << j + 1 << ") " << movies[i].showtimes[j].time
-                << " - Seats: " << movies[i].showtimes[j].availableSeats << endl;
+        cout << i + 1 << ". " << movies[i].getTitle()
+            << " | " << movies[i].getCity() << endl;
+        const auto& showtimes = movies[i].getShowtimes();
+        for (size_t j = 0; j < showtimes.size(); ++j) {
+            cout << "   " << j + 1 << ") " << showtimes[j].time
+                << " - Seats: " << showtimes[j].availableSeats << endl;
         }
     }
 
+    bookTickets(movies, username);
+}
+
+void CustomerManager::bookTickets(vector<Movie>& movies, const string& username) {
     int m, s, tickets;
     cout << "Choose a movie: ";
     cin >> m;
     if (m < 1 || m > movies.size()) return;
 
     Movie& selected = movies[m - 1];
+    auto& showtimes = selected.getShowtimes();
 
     cout << "Choose showtime: ";
     cin >> s;
-    if (s < 1 || s > selected.showtimes.size()) return;
+    if (s < 1 || s > showtimes.size()) return;
 
-    Showtime& show = selected.showtimes[s - 1];
+    Showtime& show = showtimes[s - 1];
 
     cout << "How many tickets? ";
     cin >> tickets;
@@ -111,37 +114,31 @@ void CustomerManager::customerMenu(vector<Movie>& movies, const string& username
         return;
     }
 
-    string cardNumber;
-    string cardHolderFirstName;
-    string cardHolderLastName;
-    string expiryDate;
-    string cvv;
-
-
-    cout << "Enter your 16-digit credit card number: ";
+    string cardNumber, cardFirst, cardLast, expiry, cvv;
+    cout << "Enter card number: ";
     cin >> cardNumber;
-    cout << "Enter the name on the card: ";
-    cin >> cardHolderFirstName >> cardHolderLastName;
-    cout << "Enter expiry date (MM/YY): ";
-    cin >> expiryDate;
-    cout << "Enter the 3-digit CVV: ";
+    cout << "Cardholder name: ";
+    cin >> cardFirst >> cardLast;
+    cout << "Expiry date (MM/YY): ";
+    cin >> expiry;
+    cout << "CVV: ";
     cin >> cvv;
 
     show.availableSeats -= tickets;
 
-    ofstream resFile("reservations.txt", ios::app);
+    ofstream resFile(reservationFile, ios::app);
     if (!resFile) {
-        cout << "Cannot open reservations.txt.\n";
+        cout << "Cannot open reservation file.\n";
         return;
     }
 
     resFile << "Username: " << username
-        << ", Movie: " << selected.title
-        << ", City: " << selected.city
+        << ", Movie: " << selected.getTitle()
+        << ", City: " << selected.getCity()
         << ", Date: " << show.date
-        << ", Showtime: " << show.time
+        << ", Time: " << show.time
         << ", Tickets: " << tickets << "\n";
 
-    cout << "Tickets booked! Enjoy the movie.\n";
+    cout << "Thank you for booking your tickets!\n";
     system("pause");
 }

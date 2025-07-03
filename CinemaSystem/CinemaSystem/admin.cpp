@@ -1,13 +1,11 @@
-#include <iostream>
-#include <vector>
-#include <string>
 #include "admin.h"
-#include "movie.h"
+#include <iostream>
+#include <limits>
 
 using namespace std;
 
-bool adminLogin(vector<Movie>& movies) {
-    system("cls");;
+bool Admin::login(vector<Movie>& movies) {
+    system("cls");
     string username, password;
     cout << "Enter admin username: ";
     cin >> username;
@@ -16,7 +14,7 @@ bool adminLogin(vector<Movie>& movies) {
 
     if (username == "kolyo" && password == "121212") {
         cout << "Login successful!\n";
-        adminMenu(movies);
+        menu(movies);
         return true;
     }
     else {
@@ -25,41 +23,28 @@ bool adminLogin(vector<Movie>& movies) {
     }
 }
 
-void adminMenu(vector<Movie>& movies) {
+void Admin::menu(vector<Movie>& movies) {
     int choice;
     do {
-        system("cls");;
+        system("cls");
         cout << "\n=== Admin Menu ===\n";
-        cout << "1. Add Movie\n";
-        cout << "2. View Movies\n";
-        cout << "3. Edit Showtimes\n";
-        cout << "4. Logout\n";
-        cout << "Choose an option: ";
+        cout << "1. Add Movie\n2. View Movies\n3. Edit Showtimes\n4. Logout\nChoose: ";
         cin >> choice;
 
         if (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input. Try again.\n";
+            cout << "Invalid input.\n";
             continue;
         }
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (choice) {
-        case 1:
-            addMovie(movies);
-            break;
-        case 2:
-            viewMovies(movies);
-            break;
-        case 3:
-            editShowtimes(movies);
-            break;
-        case 4:
-            cout << "Logging out...\n";
-            break;
-        default:
-            cout << "Invalid choice. Try again.\n";
+        case 1: addMovie(movies); break;
+        case 2: viewMovies(movies); break;
+        case 3: editShowtimes(movies); break;
+        case 4: cout << "Logging out...\n"; break;
+        default: cout << "Invalid option.\n";
         }
     } while (choice != 4);
 }
