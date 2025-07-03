@@ -111,6 +111,22 @@ void CustomerManager::customerMenu(vector<Movie>& movies, const string& username
         return;
     }
 
+    string cardNumber;
+    string cardHolderFirstName;
+    string cardHolderLastName;
+    string expiryDate;
+    string cvv;
+
+
+    cout << "Enter your 16-digit credit card number: ";
+    cin >> cardNumber;
+    cout << "Enter the name on the card: ";
+    cin >> cardHolderFirstName >> cardHolderLastName;
+    cout << "Enter expiry date (MM/YY): ";
+    cin >> expiryDate;
+    cout << "Enter the 3-digit CVV: ";
+    cin >> cvv;
+
     show.availableSeats -= tickets;
 
     ofstream resFile("reservations.txt", ios::app);
