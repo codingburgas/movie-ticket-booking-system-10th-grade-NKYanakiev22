@@ -1,0 +1,1 @@
+Username: Nikolay, Movie: Cars, City: Burgas, Date: 08.07.2025, Showtime: 20:00, Tickets: 2

@@ -1,22 +1,52 @@
-#include <iostream>
-#include <vector>
-#include <string>
 #include "movie.h"
+#include <iostream>
+#include <limits>
 
 using namespace std;
 
+Movie::Movie(const string& t, const string& c) : title(t), city(c) {}
+
+void Movie::addShowtime(const Showtime& s) {
+    showtimes.push_back(s);
+}
+
+void Movie::editShowtime(int index, const string& newTime) {
+    if (index >= 0 && index < showtimes.size())
+        showtimes[index].time = newTime;
+}
+
+void Movie::editSeats(int index, int newSeats) {
+    if (index >= 0 && index < showtimes.size())
+        showtimes[index].availableSeats = newSeats;
+}
+
+const string& Movie::getTitle() const { return title; }
+const string& Movie::getCity() const { return city; }
+vector<Showtime>& Movie::getShowtimes() { return showtimes; }
+const vector<Showtime>& Movie::getShowtimes() const { return showtimes; }
+
+void Movie::display(int index) const {
+    cout << "\nMovie " << index + 1 << ": " << title << endl;
+    cout << "  City: " << city << endl;
+    for (const auto& show : showtimes) {
+        cout << "  Date: " << show.date
+            << ", Time: " << show.time
+            << ", Seats: " << show.availableSeats << endl;
+    }
+}
+
 void addMovie(vector<Movie>& movies) {
-    Movie m;
+    string title, city;
+    int showtimeCount;
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
     cout << "Enter movie title: ";
-    getline(cin, m.title);
-
+    getline(cin, title);
     cout << "Enter city: ";
-    getline(cin, m.city);
+    getline(cin, city);
 
-    int showtimeCount;
+    Movie m(title, city);
+
     cout << "How many showtimes to add? ";
     cin >> showtimeCount;
 
@@ -24,14 +54,11 @@ void addMovie(vector<Movie>& movies) {
         Showtime s;
         cout << "Enter showtime (e.g., 18:00): ";
         cin >> s.time;
-
-        cout << "Enter date for this showtime (YYYY-MM-DD): ";
+        cout << "Enter date (YYYY-MM-DD): ";
         cin >> s.date;
-
-        cout << "Enter number of available seats: ";
+        cout << "Available seats: ";
         cin >> s.availableSeats;
-
-        m.showtimes.push_back(s);
+        m.addShowtime(s);
     }
 
     movies.push_back(m);
@@ -42,18 +69,10 @@ void addMovie(vector<Movie>& movies) {
 void viewMovies(const vector<Movie>& movies) {
     if (movies.empty()) {
         cout << "No movies available.\n";
-        return;
     }
-
-    for (size_t i = 0; i < movies.size(); ++i) {
-        cout << "\nMovie " << i + 1 << ": " << movies[i].title << endl;
-        cout << "  City: " << movies[i].city << endl;
-
-        for (const auto& show : movies[i].showtimes) {
-            cout << "  Date: " << show.date
-                << ", Time: " << show.time
-                << ", Seats: " << show.availableSeats << endl;
-        }
+    else {
+        for (size_t i = 0; i < movies.size(); ++i)
+            movies[i].display(i);
     }
     system("pause");
 }
@@ -70,35 +89,30 @@ void editShowtimes(vector<Movie>& movies) {
 
     Movie& movie = movies[index - 1];
     int choice;
-    cout << "Editing: " << movie.title << "\n";
-    cout << "1. Change a showtime\n2. Change available seats\n";
+    cout << "Editing: " << movie.getTitle() << "\n1. Change a showtime\n2. Change available seats\n";
     cin >> choice;
 
-    if (choice == 1) {
-        for (size_t i = 0; i < movie.showtimes.size(); ++i)
-            cout << i + 1 << ". " << movie.showtimes[i].time << endl;
+    const auto& showtimes = movie.getShowtimes();
+    for (size_t i = 0; i < showtimes.size(); ++i)
+        cout << i + 1 << ". " << showtimes[i].time << " (" << showtimes[i].availableSeats << " seats)\n";
 
-        int stIndex;
-        cout << "Which showtime to edit? ";
-        cin >> stIndex;
-        if (stIndex >= 1 && stIndex <= movie.showtimes.size()) {
-            cout << "Enter new time: ";
-            cin >> movie.showtimes[stIndex - 1].time;
-        }
+    int stIndex;
+    cout << "Select showtime: ";
+    cin >> stIndex;
+
+    if (choice == 1) {
+        string newTime;
+        cout << "New time: ";
+        cin >> newTime;
+        movie.editShowtime(stIndex - 1, newTime);
     }
     else if (choice == 2) {
-        for (size_t i = 0; i < movie.showtimes.size(); ++i)
-            cout << i + 1 << ". " << movie.showtimes[i].time << " (" << movie.showtimes[i].availableSeats << " seats)\n";
-
-        int stIndex;
-        cout << "Which showtime's seats to change? ";
-        cin >> stIndex;
-        if (stIndex >= 1 && stIndex <= movie.showtimes.size()) {
-            cout << "Enter new number of seats: ";
-            cin >> movie.showtimes[stIndex - 1].availableSeats;
-        }
+        int newSeats;
+        cout << "New seat count: ";
+        cin >> newSeats;
+        movie.editSeats(stIndex - 1, newSeats);
     }
     else {
-        cout << "Invalid choice.\n";
+        cout << "Invalid option.\n";
     }
 }

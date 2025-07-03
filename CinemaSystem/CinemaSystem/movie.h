@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
 #include <string>
+#include <vector>
 
 struct Showtime {
     std::string time;
@@ -8,11 +8,26 @@ struct Showtime {
     int availableSeats;
 };
 
-struct Movie {
+class Movie {
+private:
     std::string title;
     std::string city;
-    std::string date;
     std::vector<Showtime> showtimes;
+
+public:
+    Movie() = default;
+    Movie(const std::string& title, const std::string& city);
+
+    void addShowtime(const Showtime& showtime);
+    void editShowtime(int index, const std::string& newTime);
+    void editSeats(int index, int newSeats);
+
+    const std::string& getTitle() const;
+    const std::string& getCity() const;
+    std::vector<Showtime>& getShowtimes();
+    const std::vector<Showtime>& getShowtimes() const;
+
+    void display(int index) const;
 };
 
 void addMovie(std::vector<Movie>& movies);
