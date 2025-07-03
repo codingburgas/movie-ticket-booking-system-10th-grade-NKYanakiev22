@@ -1,0 +1,4 @@
+Movie: Cars, City: Burgas, Date: 05.07.2025, Showtime: 14:00, Tickets: 2
+Movie: , City: burgas, Date: 10.07.2025, Showtime: 18:00, Tickets: 2
+Movie: Cars, City: Burgas, Date: 05.07.2025, Showtime: 14:00, Tickets: 2
+Movie: cars, City: burgas, Date: 05.07.2025, Showtime: 14:00, Tickets: 1

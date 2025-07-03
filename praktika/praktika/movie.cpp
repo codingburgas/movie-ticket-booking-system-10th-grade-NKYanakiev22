@@ -8,7 +8,6 @@ using namespace std;
 void addMovie(vector<Movie>& movies) {
     Movie m;
 
-    // Flush any leftover input before getline
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     cout << "Enter movie title: ";
@@ -33,13 +32,11 @@ void addMovie(vector<Movie>& movies) {
         cin >> s.availableSeats;
 
         m.showtimes.push_back(s);
-
-        if (i == 0) {
-            m.date = s.date;
-        }
     }
+
     movies.push_back(m);
     cout << "Movie added successfully!\n";
+    system("pause");
 }
 
 void viewMovies(const vector<Movie>& movies) {
@@ -50,10 +47,15 @@ void viewMovies(const vector<Movie>& movies) {
 
     for (size_t i = 0; i < movies.size(); ++i) {
         cout << "\nMovie " << i + 1 << ": " << movies[i].title << endl;
+        cout << "  City: " << movies[i].city << endl;
+
         for (const auto& show : movies[i].showtimes) {
-            cout << "  Time: " << show.time << ", Seats: " << show.availableSeats;
+            cout << "  Date: " << show.date
+                << ", Time: " << show.time
+                << ", Seats: " << show.availableSeats << endl;
         }
     }
+    system("pause");
 }
 
 void editShowtimes(vector<Movie>& movies) {

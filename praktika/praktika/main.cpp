@@ -50,14 +50,16 @@ int main() {
             }
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (customerChoice == 1) {
-                registerCustomer();
+            CustomerManager cm;
+
+            if(customerChoice == 1) {
+                cm.registerCustomer();
                 cout << "Now log in to continue.\n";
             }
             else if (customerChoice == 2) {
-                string loggedInUser = loginCustomer();
+                string loggedInUser = cm.loginCustomer();
                 if (!loggedInUser.empty()) {
-                    customerMenu(movies, loggedInUser);
+                    cm.customerMenu(movies, loggedInUser);
                 }
             }
             else {
