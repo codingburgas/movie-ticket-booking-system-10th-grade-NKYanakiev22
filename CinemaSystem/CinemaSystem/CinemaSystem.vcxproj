@@ -24,6 +24,7 @@
     <ProjectGuid>{6073a6b2-319f-495e-a561-69340965999a}</ProjectGuid>
     <RootNamespace>praktika</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CinemaSystem</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
